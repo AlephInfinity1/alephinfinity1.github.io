@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="原文链接： [C++] Some programming language tips and tricks - Codeforces Hello, Codeforces! Here are some language tips and tricks I have discovered that could (hopefully) help you write more concise or efficient code. Note that all of the below tips are specific to the C++ programming language and the STL library. # Creating a\u00a0std::set\u00a0or\u00a0std::map\u00a0from sorted data in\u00a0𝑂(𝑛)\u00a0time The sorted containers\u00a0set\u00a0and\u00a0map\u00a0are usually implemented as red–black trees, meaning that their\u00a0insert\u00a0operation runs in\u00a0𝑂(log𝑛)\u00a0time by default.">
+<title>[C&#43;&#43;] Some programming language tips and tricks</title>
+
+<link rel='canonical' href='http://localhost:1313/post/cpp_tips_and_tricks/'>
+
+<link rel="stylesheet" href="/scss/style.min.760e3dabc1e140d2e6abd27a8ca0aabb60e568829b29f67d2df12024136eff37.css"><meta property='og:title' content="[C++] Some programming language tips and tricks">
+<meta property='og:description' content="原文链接： [C++] Some programming language tips and tricks - Codeforces Hello, Codeforces! Here are some language tips and tricks I have discovered that could (hopefully) help you write more concise or efficient code. Note that all of the below tips are specific to the C++ programming language and the STL library. # Creating a\u00a0std::set\u00a0or\u00a0std::map\u00a0from sorted data in\u00a0𝑂(𝑛)\u00a0time The sorted containers\u00a0set\u00a0and\u00a0map\u00a0are usually implemented as red–black trees, meaning that their\u00a0insert\u00a0operation runs in\u00a0𝑂(log𝑛)\u00a0time by default.">
+<meta property='og:url' content='http://localhost:1313/post/cpp_tips_and_tricks/'>
+<meta property='og:site_name' content='My New Hugo Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-02-17T17:09:01&#43;08:00'/><meta property='article:modified_time' content='2024-02-17T17:09:01&#43;08:00'/>
+<meta name="twitter:title" content="[C++] Some programming language tips and tricks">
+<meta name="twitter:description" content="原文链接： [C++] Some programming language tips and tricks - Codeforces Hello, Codeforces! Here are some language tips and tricks I have discovered that could (hopefully) help you write more concise or efficient code. Note that all of the below tips are specific to the C++ programming language and the STL library. # Creating a\u00a0std::set\u00a0or\u00a0std::map\u00a0from sorted data in\u00a0𝑂(𝑛)\u00a0time The sorted containers\u00a0set\u00a0and\u00a0map\u00a0are usually implemented as red–black trees, meaning that their\u00a0insert\u00a0operation runs in\u00a0𝑂(log𝑛)\u00a0time by default.">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">My New Hugo Site</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/cpp_tips_and_tricks/">[C&#43;&#43;] Some programming language tips and tricks</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 17, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    9 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>原文链接：</p>
+<p><a class="link" href="https://codeforces.com/blog/entry/126011"  target="_blank" rel="noopener"
+    >[C++] Some programming language tips and tricks - Codeforces</a></p>
+<p>Hello, Codeforces!</p>
+<p>Here are some language tips and tricks I have discovered that could (hopefully) help you write more concise or efficient code. Note that all of the below tips are specific to the C++ programming language and the STL library.</p>
+<h1 id="creating-astdsetorstdmapfrom-sorted-data-in𝑂𝑛time">
+    <a href="#creating-astdsetorstdmapfrom-sorted-data-in%f0%9d%91%82%f0%9d%91%9btime" class="header-anchor">#</a>
+    Creating a std::set or std::map from sorted data in 𝑂(𝑛) time
+</h1><p>The sorted containers <code>set</code> and <code>map</code> are usually implemented as red–black trees, meaning that their <code>insert</code> operation runs in 𝑂(log𝑛) time by default. Naturally, repeating the <code>insert</code> operation 𝑛 times would result in a time complexity of 𝑂(𝑛log𝑛).</p>
+<pre tabindex="0"><code>vector&lt;int&gt; a = /* ... */;
+set&lt;int&gt; s1;
+for (int e : a) { s1.insert(e); } // O(n log n)
+</code></pre><p>However, <code>set</code> and <code>map</code> also provide a constructor method, that directly constructs the data structure from a given pair of iterators. In most implementations of C++, if the data contained within the range is already sorted, the constructor instead runs in 𝑂(𝑛) time.</p>
+<pre tabindex="0"><code>vector&lt;int&gt; a = /* some sorted data */;
+set&lt;int&gt; s2(a.begin(), a.end()); // O(n)
+int arr[n + 10] = /* more sorted data */;
+set&lt;int&gt; s3(&amp;arr[1], &amp;arr[n] + 1); // ditto
+</code></pre><p>Here is a simple benchmark code that I have written to illustrate the above performance difference. The code generates 𝑛 integers in the range [0,𝑛], sorts them, then inserts them to sets using the two above methods. It can be seen, that the 𝑂(𝑛) method generally runs in half the time of the 𝑂(𝑛log𝑛) method:</p>
+<p><strong>Benchmark code</strong></p>
+<p><a class="link" href="%5BC&#43;&#43;%5D%20Some%20programming%20language%20tips%20and%20tricks%201e4c7cb0026844f4aa308d1b432fdae4/bm.cpp" >bm.cpp</a></p>
+<p><strong>Results (nanoseconds)</strong></p>
+<p>If directly constructing the set (or map) is not possible (e.g. due to prior operations needing to be done on the set, or due to the data being online, etc.), the C++ <code>set</code> container provides an overload of the <code>.insert()</code> method that allows you to also specify a &lsquo;hint&rsquo; iterator, which points to the element just greater than the element to be inserted. In other words, if <code>e</code> is to be inserted into <code>s</code>, this &lsquo;hint&rsquo; iterator should be equal to <code>s.lower_bound(e)</code>.</p>
+<p>If the given hint iterator happens to be correct, then the <code>.insert()</code> call runs in amortised 𝑂(1) time. Otherwise, the call still runs in <code>O(\log n)</code> time but may be slower than the regular <code>.insert()</code> call.</p>
+<pre tabindex="0"><code>s.insert(s.lower_bound(10), 10);// The &#39;insert&#39; operation itself runs in amortised O(1) time
+</code></pre><p>The above example is not very helpful, since the <code>.lower_bound()</code> call itself already takes 𝑂(log𝑛) time, defeating the entire purpose of the optimisation. However, this can be useful if we already have extra information about the position of the to-be-added element. In particular,</p>
+<ul>
+<li>If the element <code>e</code> is greater than all elements currently in <code>s</code>, we can write <code>s.insert(s.end(), e)</code>.</li>
+<li>Similarly, if the element <code>e</code> is less than all elements currently in <code>s</code>, we can write <code>s.insert(s.begin(), e)</code>.</li>
+</ul>
+<p>Similar operations can also be done on the <code>map</code> data structure, except that the second argument (element to be inserted) now needs to be a key-value <code>std::pair</code>.</p>
+<h1 id="reducing-the-number-of-memory-allocations-usingreserve">
+    <a href="#reducing-the-number-of-memory-allocations-usingreserve" class="header-anchor">#</a>
+    Reducing the number of memory allocations using .reserve()
+</h1><p>In the vast majority of C++ STL implementations, the containers <code>vector</code> and <code>string</code> have an internal buffer that is used to store data. Whenever a new element needs to be inserted while this buffer is full, the data structure first allocates a new, larger buffer, copies all data over to it, and then deallocates the original buffer. Whenever this occurs with a <code>.push_back()</code> call, the time taken for that call would be 𝑂(𝑛). Since such memory reallocations can be very expensive, it would be ideal if we could decrease the number of reallocations.</p>
+<p>The <code>.reserve()</code> method, available for both <code>vector</code>s and <code>string</code>s, can lessen the frequency of reallocations by making the data structure expand its buffer to a provided size. For instance, if <code>v</code> is a vector, <code>v.reserve(10);</code> expands <code>v</code>&rsquo;s internal buffer to have a size of at least 10.</p>
+<p><code>.reserve()</code> has the following properties:</p>
+<ul>
+<li>Iterators and references are invalidated <em>if and only if</em> the provided size exceeds the current size of the buffer.</li>
+<li>If the buffer is already big enough, nothing happens. <code>.reserve()</code> cannot be used to decrease the size of a container.</li>
+<li>If the <code>.reserve()</code> call did change the size of the buffer, the time taken would be 𝑂(𝑛), where 𝑛 is the size of the buffer.</li>
+<li><code>.reserve()</code> only changes the <em>internal</em> size of the container, not the <em>logical</em> size. For instance, the following code segment is still illegal (undefined behaviour):</li>
+</ul>
+<pre tabindex="0"><code>vector&lt;int&gt; v(5, 1);// v has size 5
+v.reserve(100);// v now has buffer size at least 100, but logically still size 5
+v[10] = 20;// undefined behaviour
+</code></pre><p>It is important to note that, since <code>.reserve()</code> calls themselves cause reallocations to occur, they should be used sparingly, preferably only once just after the declaration of the container itself. For instance, the following code is highly inefficient and, theoretically, would increases the time taken from 𝑂(𝑛) to 𝑂(𝑛2):</p>
+<pre tabindex="0"><code>int n;
+cin &gt;&gt; n;
+vector&lt;int&gt; a;
+for (int i = 0; i &lt; n; i++) {
+    a.reserve(i + 1);
+int e;
+    cin &gt;&gt; e;
+    a.push_back(e);
+}
+</code></pre><p><strong>Correct version ($O(n)$)</strong></p>
+<p>Additionally, for <code>string</code>s, directly inputting it from <code>std::cin</code> would also cause it to expand its buffer size dynamically. On Codeforces, many problems would give you the size of the string first before the string itself. In these scenarios, the following code can be written to read the string more effectively:</p>
+<pre tabindex="0"><code>int n;
+string s;
+cin &gt;&gt; n;
+s.reserve(n);
+cin &gt;&gt; s;
+</code></pre><p>Finally, note that calling <code>.reserve()</code> with an argument exceeding the actual size of the container can cause memory to be wasted. If memory is critical but the exact size of the container is not known, we can use the <code>.shrink_to_fit()</code> method to reduce the buffer size to what is strictly necessary to carry the data:</p>
+<pre tabindex="0"><code>string s;
+s.reserve(100);
+cin &gt;&gt; s;
+// s is likely to be less than 100 characters, therefore shrink to save memory
+s.shrink_to_fit();
+</code></pre><p>Note that, unlike <code>.reserve()</code>, <code>.shrink_to_fit()</code> is <strong>not</strong> guaranteed to have any effect on the container, though for most implementations, it does reduce the memory usage.</p>
+<h1 id="the-macroonline_judge">
+    <a href="#the-macroonline_judge" class="header-anchor">#</a>
+    The macro ONLINE_JUDGE
+</h1><p>When a piece of C++ code is run on Codeforces, the platform automatically defines a macro <code>ONLINE_JUDGE</code>. This can be useful in a variety of scenarios when you want to differentiate whether the code is being tested on your device or being judged online.</p>
+<p>For instance, a common optimisation for improving I/O efficiency is to untie the standard streams <code>cin</code> and <code>cout</code> using the following line of code: <code>cin.tie(0)</code>. By default, C++ flushes the <code>cout</code> stream whenever an input operation is performed, so that the user can see the output before being requested to input. While this would slow down the program and increase the running time, it could still be a useful feature to have when testing the code. Therefore, we can conditionally enable this optimisation using the following code segment:</p>
+<pre tabindex="0"><code>#ifdef ONLINE_JUDGE
+    cin.tie(nullptr);
+#endif
+</code></pre><p>This way, the output is not affected when the code is being run on your local device. Be careful not to misspell <code>ONLINE_JUDGE</code>! Otherwise the optimisation will not be applied anywhere and may cause great performance penalties.</p>
+<p>Another common usage of <code>ONLINE_JUDGE</code> is writing debug output functions. You can write a debugging function that only outputs to <code>cout</code> when not officially submitted and judged using the following code template:</p>
+<pre tabindex="0"><code>void debug(/* any parameters */) {
+#ifndef ONLINE_JUDGE
+// code that produces debug output#endif
+}
+</code></pre><p>The <code>debug</code> function can now be used anywhere inside your code to produce output only when testing. When judging, the function is a no-op. Be careful not to mix up the preprocessor directives — here it is <code>ifndef</code> instead of <code>ifdef</code>, which causes the code that follows to be compiled only when the macro is <strong>not</strong> defined.</p>
+<h1 id="explicit-types-forminandmax">
+    <a href="#explicit-types-forminandmax" class="header-anchor">#</a>
+    Explicit types for min and max
+</h1><p>By default, the functions <code>min</code> and <code>max</code> from <code>&lt;algorithm&gt;</code> cause compile errors when the arguments are not of the same type. For instance, the below statements all cause compilation failures:</p>
+<pre tabindex="0"><code>min(3, 2.5);
+max(4, 7LL);
+min(&#39;a&#39;,&#39;d&#39; + 1);
+max(10, a.size());// a is a container
+</code></pre><p>In these cases, you can explicitly specify a type for both parameters to be converted to in order to compile. Beware of losses to range/precision, however.</p>
+<pre tabindex="0"><code>min&lt;double&gt;(3, 2.5);
+max&lt;longlong&gt;(4, 7LL);
+min&lt;char&gt;(&#39;a&#39;,&#39;d&#39; + 1);// narrows the second argument, which is an int
+max&lt;int&gt;(10, a.size());// technically narrows a.size() but usually won&#39;t matter
+</code></pre><h1 id="lambda-comparator-forpriority_queue">
+    <a href="#lambda-comparator-forpriority_queue" class="header-anchor">#</a>
+    Lambda comparator for priority_queue
+</h1><p>You can create a <code>priority_queue</code> whose comparator function is a lambda without having to create a separate class. For instance, to create a <code>priority_queue</code> for Dijkstra&rsquo;s algorithm where entries are stored as node–distance pairs, one can write:</p>
+<pre tabindex="0"><code>using ll =longlong;
+usingentry_t = pair&lt;int, ll&gt;;
+
+auto cmp = [](entry_t a,entry_t b) {return a.second &gt; b.second; };
+priority_queue&lt;entry_t, vector&lt;entry_t&gt;,decltype(cmp)&gt; q(cmp);
+</code></pre><p>In my opinion, this is more natural than using (negative distance)–node pairs, for which the default sorting would have worked, but I find it more difficult to work with and possibly more bug-prone.</p>
+<h1 id="miscellaneous-helpful-stl-functions">
+    <a href="#miscellaneous-helpful-stl-functions" class="header-anchor">#</a>
+    Miscellaneous helpful STL functions
+</h1><p>The following are some lesser-known STL functions that I have found useful in a variety of scenarios. I find that they can make code more concise by a considerable degree.</p>
+<ul>
+<li><code>div</code> and <code>lldiv</code> (<code>&lt;cstdlib&gt;</code>): takes two integer arguments (int for div, long long for lldiv), returns a structure that contains the quotient and the remainder but only takes one operation. Can be unpacked using structured bindings: auto [quot, rem] = div(a, b);</li>
+<li><code>reduce</code> (<code>&lt;numeric&gt;</code>): given a range (an iterator pair), returns the sum of all elements in it. Beware of arithmetic overflows, however.</li>
+<li><code>minmax_element</code> (<code>&lt;algorithm&gt;</code>): given a range, returns a pair of iterators (pointers for arrays) to the minimum and maximum element inside that range. This is usually better than two separate calls to min_element and max_element since the range is traversed only once. Can be unpacked using structured bindings, too.</li>
+<li><code>inclusive_scan</code> and <code>exclusive_scan</code> (<code>&lt;numeric&gt;</code>): generates the prefix sum for a range. The nth output of inclusive_scan includes the nth element in the sum, while that of exclusive_scan does not.</li>
+<li><code>swap</code> (<code>&lt;utility&gt;</code>): swaps two elements. Though we can implement swapping ourselves in merely 3 lines, the frequency of this operation makes this function still useful. Additionally, swaps for container classes such as vectors or strings are usually more optimised than swapping via a temporary variable since most implementations of STL allow swaps to access the innards of these structures.</li>
+</ul>
+<h1 id="conclusion">
+    <a href="#conclusion" class="header-anchor">#</a>
+    Conclusion
+</h1><p>So, the above is some C++ tips that I would like to share with you all. If you have any feedback regarding the content or the format, please kindly leave them in the comments below. Thank you very much for reading this far!</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 My New Hugo Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

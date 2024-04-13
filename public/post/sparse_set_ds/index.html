@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
+<title>[Tutorial] The sparse set data structure</title>
+
+<link rel='canonical' href='http://localhost:1313/post/sparse_set_ds/'>
+
+<link rel="stylesheet" href="/scss/style.min.760e3dabc1e140d2e6abd27a8ca0aabb60e568829b29f67d2df12024136eff37.css"><meta property='og:title' content="[Tutorial] The sparse set data structure">
+<meta property='og:description' content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
+<meta property='og:url' content='http://localhost:1313/post/sparse_set_ds/'>
+<meta property='og:site_name' content='My New Hugo Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-03-24T17:09:01&#43;08:00'/><meta property='article:modified_time' content='2024-03-24T17:09:01&#43;08:00'/>
+<meta name="twitter:title" content="[Tutorial] The sparse set data structure">
+<meta name="twitter:description" content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">My New Hugo Site</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/sparse_set_ds/">[Tutorial] The sparse set data structure</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 24, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    9 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p><a class="link" href="https://codeforces.com/blog/entry/127472"  target="_blank" rel="noopener"
+    >[Tutorial] The sparse set data structure - Codeforces</a></p>
+<p>Original post: <a class="link" href="https://codeforces.com/blog/entry/127472"  target="_blank" rel="noopener"
+    >https://codeforces.com/blog/entry/127472</a></p>
+<p>Hello, Codeforces!</p>
+<p>I recently came across a data structure that I find quite interesting: the <strong>sparse set</strong>. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be <em>initialised</em> at all before it can be used! Naturally, that also means that its data can be reset in $\mathcal O(1)$ time, as opposed to the $\mathcal O(n)$ time expected of regular bitsets. It also has the added benefit that traversing its elements takes time proportional to the number of elements rather than the size of the data structure, making the operation more efficient for sparse bitsets. However, note that it is likely less efficient in terms of its memory usage (still $\mathcal O(n)$ but ~64× larger constant) and constant time factor.</p>
+<h1 id="introduction">
+    <a href="#introduction" class="header-anchor">#</a>
+    Introduction
+</h1><p>The sparse set consists simply of two integer arrays (which I&rsquo;ll call $d$ and $s$) and a size variable $n$, satisfying the following class invariants:</p>
+<ul>
+<li><strong>Invariant 1</strong>: 𝑑[0..(𝑛−1)] (inclusive) stores the elements of the bitset;</li>
+<li><strong>Invariant 2</strong>: If 𝑒 is an element of the bitset, then 𝑠[𝑒] stores its index in the 𝑑 array.</li>
+</ul>
+<p>In most literature covering this data structure, the arrays $d$ and $s$ are called the &lsquo;dense&rsquo; and the &lsquo;sparse&rsquo; arrays, respectively.</p>
+<p>For any array element not mentioned above, its value can be <em>anything</em> without affecting the function of the data structure.</p>
+<p>A typical sparse set might look like this (asterisk denotes terms that can be anything):</p>
+<p><img src="https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png"
+	
+	
+></p>
+<p>The red lines indicate the connections between the elements in 𝑑 and 𝑠. It can be shown that, for all indices 𝑖 in the range [0,𝑛−1], the constraint 𝑑[𝑠[𝑑[𝑖]]]=𝑑[𝑖] is satisfied.</p>
+<p>In C++ code, the data structure can be represented as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">sparse_set</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> n;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> d[N], s[N];
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Note that, in this article, we would use 𝑁 to denote the size of the data structure itself (and thus, the set of elements allowed is 0,1,…,𝑁−1), and 𝑛 to denote the number of elements currently stored.</p>
+<p><strong>Important implementation detail</strong>: if you are using C, C++, or Rust, you still <em>have</em> to initialise this data structure in its constructor since accessing an uninitialised element does not return an unspecified value; it is undefined behaviour and can introduce bugs elsewhere in your program. You don&rsquo;t have to do this when resetting the data structure, however.</p>
+<ul>
+<li>
+<p><strong>Example one-line constructor</strong></p>
+<p>sparse_set(): n{0}, d{}, s{} {}</p>
+</li>
+</ul>
+<h1 id="lookup">
+    <a href="#lookup" class="header-anchor">#</a>
+    Lookup
+</h1><ul>
+<li><strong>Precondition</strong>: 𝑖𝑑𝑥 is a value between 0 and 𝑁−1;</li>
+<li><strong>Postcondition</strong>: the data structure is unmodified, and 𝑖𝑑𝑥&rsquo;s presence in the bitset is returned.</li>
+<li><strong>Time cost</strong>: 𝑂(1)</li>
+</ul>
+<p>Surely, since 𝑠[𝑖] stores the position of element 𝑖 in 𝑑, I can simply check if 𝑠[𝑖] is between 0 and 𝑛−1 to determine whether 𝑖 is in the bitset, right?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// Intentionally incorrect code!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;::</span>test(<span style="color:#66d9ef">int</span> idx) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> s[idx] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> s[idx] <span style="color:#f92672">&lt;</span> n;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Not really… it is entirely possible that 𝑖 is not in the set, yet 𝑠[𝑖] has a &lsquo;valid&rsquo; value between 0 and 𝑛−1 since the data structure specifies no guarantees for values of 𝑠[𝑖] where 𝑖 is not an element; therefore false positives might arise. We have to check if the value of 𝑑[𝑠[𝑖]] links <em>back</em> to the correct value of 𝑖.</p>
+<p><img src="https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png"
+	
+	
+></p>
+<p>Here, 6 isn&rsquo;t actually stored in the data structure, but 𝑠[6] happened to be a &lsquo;correct&rsquo; index, misleading our erroneous algorithm to think that it is.</p>
+<p>The correct implementation of the lookup operation would look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;::</span>test(<span style="color:#66d9ef">int</span> idx) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> s[idx] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> s[idx] <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">&amp;&amp;</span> d[s[idx]] <span style="color:#f92672">==</span> idx;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="insertion">
+    <a href="#insertion" class="header-anchor">#</a>
+    Insertion
+</h1><ul>
+<li><strong>Precondition</strong>: 𝑖𝑑𝑥 is an integer between 0 and 𝑁−1.</li>
+<li><strong>Postcondition</strong>: 𝑖𝑑𝑥 is inserted into the data structure if and only if it wasn&rsquo;t already present.</li>
+<li><strong>Time cost</strong>: 𝑂(1)</li>
+</ul>
+<p>Just like normal bitsets, our implementation does not allow duplicate elements. Therefore, we have to check whether the element is present before inserting. Inserting an element is a rather simple operation: if the element is not already present, we push its value onto the 𝑑 array, update 𝑠[𝑖𝑑𝑥] to the correct value, and then increment the value of 𝑛 by 1.</p>
+<p><img src="https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png"
+	
+	
+></p>
+<p>The code to do this would look a bit like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;::</span>set(<span style="color:#66d9ef">int</span> idx) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (test(idx)) { <span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span>    d[n] <span style="color:#f92672">=</span> idx;
+</span></span><span style="display:flex;"><span>    s[idx] <span style="color:#f92672">=</span> n;
+</span></span><span style="display:flex;"><span>    n<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="deletion">
+    <a href="#deletion" class="header-anchor">#</a>
+    Deletion
+</h1><ul>
+<li><strong>Precondition</strong>: 𝑖𝑑𝑥 is an index between 0 and 𝑁−1.</li>
+<li><strong>Postcondition</strong>: if 𝑖𝑑𝑥 was inside the set, it is now removed.</li>
+<li><strong>Time cost</strong>: 𝑂(1).</li>
+</ul>
+<p>As the inverse operation of insertion, deletion is slightly more complex to implement than insertion but is nevertheless still rather straightforward. The central idea is to swap the last element with the element to be deleted in the 𝑑 array, then update the corresponding values in 𝑠 accordingly.</p>
+<p>Basic procedure:</p>
+<ul>
+<li>We want to make 𝑖𝑑𝑥 the new position for our last element, therefore change 𝑠[𝑑[𝑛−1]] to 𝑠[𝑖𝑑𝑥].</li>
+<li>Overwrite 𝑑[𝑠[𝑖𝑑𝑥]] with the value of 𝑑[𝑛−1].</li>
+<li>Decrement 𝑛 by 1.</li>
+<li>No need to modify 𝑠[𝑖𝑑𝑥] since the class invariant doesn&rsquo;t care about 𝑠[𝑒] for deleted elements 𝑒.</li>
+</ul>
+<p>The diagram for doing the above operations would look a bit like this:</p>
+<p><img src="https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png"
+	
+	
+></p>
+<p>Note that the above procedure still works when the element being deleted is the last element in the 𝑑 array, albeit with extra steps. However, since deletions to the last element are rare, it is not worth adding a branch to check for this condition.</p>
+<p>Therefore, the code for this operation would look as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;::</span>reset(<span style="color:#66d9ef">int</span> idx) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>test(idx)) {<span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span>  d[s[idx]] <span style="color:#f92672">=</span> d[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>  s[d[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]] <span style="color:#f92672">=</span> s[idx];
+</span></span><span style="display:flex;"><span>  n<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="clearance">
+    <a href="#clearance" class="header-anchor">#</a>
+    Clearance
+</h1><ul>
+<li><strong>Precondition</strong>: None</li>
+<li><strong>Postcondition</strong>: the bitset is cleared. Before modifications, <code>.get(i)</code> returns false for all valid 𝑖.</li>
+<li><strong>Time cost</strong>: 𝑂(1)</li>
+</ul>
+<p>Out of all the operations that the sparse set supports, this is arguably the most powerful, taking only 𝑂(1) time to compute, with an extremely simple implementation.</p>
+<p><img src="https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png"
+	
+	
+></p>
+<p>This is literally everything that has to be done :)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;::</span>reset() {
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="iteration">
+    <a href="#iteration" class="header-anchor">#</a>
+    Iteration
+</h1><ul>
+<li><strong>Precondition</strong>: None</li>
+<li><strong>Postcondition</strong>: Iterates through the elements of the bitset.</li>
+<li><strong>Time cost</strong>: 𝑂(𝑛) (note: 𝑛 is the number of elements present. This is different from 𝑂(𝑁) where 𝑁 is the size of the container)</li>
+</ul>
+<p>This is another operation where the sparse set is better than the classic bitset. Rather than iterating bit-by-bit and checking whether each element is present, we can simply iterate through 𝑑[0..(𝑛−1)] (inclusive) to obtain the list of elements present in the bitset.</p>
+<p>As an added bonus, if no deletion operation has been conducted since the last initialisation/clearance, the elements in 𝑑[0..(𝑛−1)] will be in the order that they are added, with the least recently added item in 𝑑[0] and the most recent in 𝑑[𝑛−1], just like a vector.</p>
+<h1 id="full-implementation">
+    <a href="#full-implementation" class="header-anchor">#</a>
+    Full Implementation
+</h1><p>The following is a C++ template implementation of the sparse set that I have written. It tries to implement all functionalities of a vanilla C++ bitset.</p>
+<p>Some implementation details:</p>
+<ul>
+<li>
+<p>The type of data this implementation of the sparse set stores is <code>std::size_t</code>, just like the STL bitset.</p>
+</li>
+<li>
+<p>Like the STL bitset, using <code>[]</code> to access and modify elements is supported. The semantics are the same as a STL bitset.</p>
+</li>
+<li>
+<p><code>test</code>, <code>set</code>, <code>reset</code>, and <code>flip</code> all throw <code>std::out_of_range</code> if the parameter is greater than or equal to 𝑁. However, using <code>[]</code> to access elements with out-of-range indices results in undefined behaviour.</p>
+</li>
+<li>
+<p>Iterators are supported and iterate through all elements in the set. The values they point to are immutable.</p>
+<ul>
+<li>This also means you can use a range-for loop to access all elements of a sparse set.</li>
+</ul>
+</li>
+<li>
+<p><strong>Full code</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;array&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstddef&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;exception&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;limits&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>size_t N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">sparse_set</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">using</span> size_type <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>size_t;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    sparse_set()<span style="color:#f92672">:</span> n_{<span style="color:#ae81ff">0</span>}, d_{}, s_{} {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    sparse_set(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> bits)<span style="color:#f92672">:</span> sparse_set() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (size_type i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> std<span style="color:#f92672">::</span>min<span style="color:#f92672">&lt;</span>size_type<span style="color:#f92672">&gt;</span>(N, std<span style="color:#f92672">::</span>numeric_limits<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">&gt;::</span>digits); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> ((bits <span style="color:#f92672">&gt;&gt;</span> i) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>                set(i);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">==</span>(<span style="color:#66d9ef">const</span> sparse_set<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">&gt;&amp;</span> other) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (size_type i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> N; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> ((<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>)[i] <span style="color:#f92672">!=</span> other[i]) { <span style="color:#66d9ef">return</span> false; }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">reference</span> {
+</span></span><span style="display:flex;"><span>        sparse_set<span style="color:#f92672">*</span> s;
+</span></span><span style="display:flex;"><span>        size_type pos;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        reference<span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">=</span>(<span style="color:#66d9ef">bool</span> b) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (b) {
+</span></span><span style="display:flex;"><span>                s<span style="color:#f92672">-&gt;</span>set(pos);
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                s<span style="color:#f92672">-&gt;</span>reset(pos);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">flip</span>() {
+</span></span><span style="display:flex;"><span>            s<span style="color:#f92672">-&gt;</span>flip(pos);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">bool</span>() <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> (<span style="color:#f92672">*</span>(<span style="color:#66d9ef">const</span> sparse_set<span style="color:#f92672">*</span>) s)[pos];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">iterator</span> {
+</span></span><span style="display:flex;"><span>        sparse_set<span style="color:#f92672">*</span> s;
+</span></span><span style="display:flex;"><span>        size_type idx;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">==</span>(iterator other) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>s) { <span style="color:#66d9ef">return</span> <span style="color:#f92672">!</span>other.s; }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> { <span style="color:#66d9ef">return</span> s <span style="color:#f92672">==</span> other.s <span style="color:#f92672">&amp;&amp;</span> idx <span style="color:#f92672">==</span> other.idx; }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        iterator<span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">++</span>() {
+</span></span><span style="display:flex;"><span>            idx<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (idx <span style="color:#f92672">&gt;=</span> s<span style="color:#f92672">-&gt;</span>n_) {
+</span></span><span style="display:flex;"><span>                s <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        iterator <span style="color:#66d9ef">operator</span><span style="color:#f92672">++</span>(<span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">auto</span> prev <span style="color:#f92672">=</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">++</span>(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> prev;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        size_type <span style="color:#66d9ef">operator</span><span style="color:#f92672">*</span>() <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> s<span style="color:#f92672">-&gt;</span>d_[idx];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span>[](size_type i) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> s_[i] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> s_[i] <span style="color:#f92672">&lt;</span> n_ <span style="color:#f92672">&amp;&amp;</span> d_[s_[i]] <span style="color:#f92672">==</span> i;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    reference <span style="color:#66d9ef">operator</span>[](size_type i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> reference{<span style="color:#66d9ef">this</span>, i};
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">test</span>(size_type i) <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">&gt;=</span> N) { <span style="color:#66d9ef">throw</span> std<span style="color:#f92672">::</span>out_of_range{<span style="color:#e6db74">&#34;test(): argument out of range&#34;</span>}; }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>)[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">all</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> n_ <span style="color:#f92672">==</span> N; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">any</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> n_ <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">none</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> n_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>; }
+</span></span><span style="display:flex;"><span>    size_type <span style="color:#a6e22e">count</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> n_; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    size_type <span style="color:#a6e22e">size</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> N; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (size_type i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> N; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            set(i);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set</span>(size_type i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (test(i)) { <span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span>        d_[n_] <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        s_[i] <span style="color:#f92672">=</span> n_;
+</span></span><span style="display:flex;"><span>        n_<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reset</span>() {
+</span></span><span style="display:flex;"><span>        n_ <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reset</span>(size_type i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>test(i)) { <span style="color:#66d9ef">return</span>; }
+</span></span><span style="display:flex;"><span>        d_[s_[i]] <span style="color:#f92672">=</span> d_[n_<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>        s_[d_[n_<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]] <span style="color:#f92672">=</span> s_[i];
+</span></span><span style="display:flex;"><span>        n_<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">flip</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (size_type i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> N; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            flip(i);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">flip</span>(size_type i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (test(i)) { reset(i); }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span> { set(i); }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    iterator <span style="color:#a6e22e">begin</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">nullptr</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">this</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> iterator <span style="color:#a6e22e">begin</span>() <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">nullptr</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">this</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    iterator <span style="color:#a6e22e">end</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">nullptr</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> iterator <span style="color:#a6e22e">end</span>() <span style="color:#66d9ef">const</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> iterator{<span style="color:#66d9ef">nullptr</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    size_type n_;
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span>size_type, N<span style="color:#f92672">&gt;</span> d_;
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span>size_type, N<span style="color:#f92672">&gt;</span> s_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div></li>
+</ul>
+<h1 id="conclusion">
+    <a href="#conclusion" class="header-anchor">#</a>
+    Conclusion
+</h1><p>While the sparse set data structure is rather obscure and almost never used in competitive programming, I think it can be useful in quite a few scenarios. In particular, it can be used as a more performant and hack-resistant version of <code>std::set</code> and <code>std::unordered_set</code> when the only type of data that needs to be stored is small integers. I believe that many of its applications already have alternatives in the STL, however.</p>
+<p>So, the above is just a little data structure that I would like to share with you all. If you have any feedback regarding the content or the format (by the way, I really need a better method of creating these diagrams), please kindly leave it in the comments below. Thank you so much for reading all the way here!</p>
+<h1 id="references">
+    <a href="#references" class="header-anchor">#</a>
+    References
+</h1><ul>
+<li>
+<p><strong>List of references</strong></p>
+<p>Most of this article&rsquo;s content is taken from <a class="link" href="https://research.swtch.com/sparse"  target="_blank" rel="noopener"
+    >this website</a>, which provides some interesting history and a great summary of this structure, forming the basis of this article.</p>
+<p>Other sources referenced:</p>
+<ul>
+<li><a class="link" href="https://skypjack.github.io/2020-08-02-ecs-baf-part-9/"  target="_blank" rel="noopener"
+    >https://skypjack.github.io/2020-08-02-ecs-baf-part-9/</a></li>
+<li><a class="link" href="https://manenko.com/2021/05/23/sparse-sets.html"  target="_blank" rel="noopener"
+    >https://manenko.com/2021/05/23/sparse-sets.html</a></li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 My New Hugo Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
