@@ -1,0 +1,13 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: Redpo's Catalogue
+theme: stack
+
+params:
+  sidebar:
+    emoji: ö
+    subtitle: Random thoughts and recollections
+    avatar:
+      enabled: true
+      local: true
+      src: images/avatar.png
