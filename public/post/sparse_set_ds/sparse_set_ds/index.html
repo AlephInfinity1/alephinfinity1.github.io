@@ -4,11 +4,11 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
 <title>[Tutorial] The sparse set data structure</title>
 
-<link rel='canonical' href='http://localhost:1313/post/sparse_set_ds/'>
+<link rel='canonical' href='http://localhost:1313/post/sparse_set_ds/sparse_set_ds/'>
 
 <link rel="stylesheet" href="/scss/style.min.760e3dabc1e140d2e6abd27a8ca0aabb60e568829b29f67d2df12024136eff37.css"><meta property='og:title' content="[Tutorial] The sparse set data structure">
 <meta property='og:description' content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
-<meta property='og:url' content='http://localhost:1313/post/sparse_set_ds/'>
+<meta property='og:url' content='http://localhost:1313/post/sparse_set_ds/sparse_set_ds/'>
 <meta property='og:site_name' content='Redpo&#39;s Catalogue'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-03-24T17:09:01&#43;08:00'/><meta property='article:modified_time' content='2024-03-24T17:09:01&#43;08:00'/>
 <meta name="twitter:title" content="[Tutorial] The sparse set data structure">
@@ -115,7 +115,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/post/sparse_set_ds/">[Tutorial] The sparse set data structure</a>
+            <a href="/post/sparse_set_ds/sparse_set_ds/">[Tutorial] The sparse set data structure</a>
         </h2>
     
         
@@ -184,13 +184,13 @@
 <p>In most literature covering this data structure, the arrays $d$ and $s$ are called the &lsquo;dense&rsquo; and the &lsquo;sparse&rsquo; arrays, respectively.</p>
 <p>For any array element not mentioned above, its value can be <em>anything</em> without affecting the function of the data structure.</p>
 <p>A typical sparse set might look like this (asterisk denotes terms that can be anything):</p>
-<p><img src="https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png"
+<p><img src="/post/sparse_set_ds/example.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png"
+		alt="An example sparse set"
 	
 	
 ></p>
@@ -224,13 +224,13 @@
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> s[idx] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> s[idx] <span style="color:#f92672">&lt;</span> n;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Not really… it is entirely possible that 𝑖 is not in the set, yet 𝑠[𝑖] has a &lsquo;valid&rsquo; value between 0 and 𝑛−1 since the data structure specifies no guarantees for values of 𝑠[𝑖] where 𝑖 is not an element; therefore false positives might arise. We have to check if the value of 𝑑[𝑠[𝑖]] links <em>back</em> to the correct value of 𝑖.</p>
-<p><img src="https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png"
+<p><img src="/post/sparse_set_ds/lookup_wrong.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png"
+		alt="Incorrect lookup"
 	
 	
 ></p>
@@ -249,13 +249,13 @@
 <li><strong>Time cost</strong>: 𝑂(1)</li>
 </ul>
 <p>Just like normal bitsets, our implementation does not allow duplicate elements. Therefore, we have to check whether the element is present before inserting. Inserting an element is a rather simple operation: if the element is not already present, we push its value onto the 𝑑 array, update 𝑠[𝑖𝑑𝑥] to the correct value, and then increment the value of 𝑛 by 1.</p>
-<p><img src="https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png"
+<p><img src="/post/sparse_set_ds/insert.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png"
+		alt="Insertion"
 	
 	
 ></p>
@@ -284,13 +284,13 @@
 <li>No need to modify 𝑠[𝑖𝑑𝑥] since the class invariant doesn&rsquo;t care about 𝑠[𝑒] for deleted elements 𝑒.</li>
 </ul>
 <p>The diagram for doing the above operations would look a bit like this:</p>
-<p><img src="https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png"
+<p><img src="/post/sparse_set_ds/delete.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png"
+		alt="Deletion"
 	
 	
 ></p>
@@ -312,13 +312,13 @@
 <li><strong>Time cost</strong>: 𝑂(1)</li>
 </ul>
 <p>Out of all the operations that the sparse set supports, this is arguably the most powerful, taking only 𝑂(1) time to compute, with an extremely simple implementation.</p>
-<p><img src="https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png"
+<p><img src="/post/sparse_set_ds/clear.png"
 	
 	
 	
 	loading="lazy"
 	
-		alt="https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png"
+		alt="Clearance"
 	
 	
 ></p>

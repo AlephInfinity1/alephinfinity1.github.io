@@ -2,6 +2,7 @@
 title = '[Tutorial] The sparse set data structure'
 date = 2024-03-24T17:09:01+08:00
 draft = false
+
 +++
 
 [[Tutorial] The sparse set data structure - Codeforces](https://codeforces.com/blog/entry/127472)
@@ -25,7 +26,7 @@ For any array element not mentioned above, its value can be *anything* without
 
 A typical sparse set might look like this (asterisk denotes terms that can be anything):
 
-![https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png](https://codeforces.com/predownloaded/f8/b0/f8b07e9f449600b8a554d919953dc21e5bac00a1.png)
+![An example sparse set](/post/sparse_set_ds/example.png)
 
 The red lines indicate the connections between the elements in 𝑑 and 𝑠. It can be shown that, for all indices 𝑖 in the range [0,𝑛−1], the constraint 𝑑[𝑠[𝑑[𝑖]]]=𝑑[𝑖] is satisfied.
 
@@ -66,7 +67,7 @@ bool sparse_set<N>::test(int idx) const {
 
 Not really… it is entirely possible that 𝑖 is not in the set, yet 𝑠[𝑖] has a 'valid' value between 0 and 𝑛−1 since the data structure specifies no guarantees for values of 𝑠[𝑖] where 𝑖 is not an element; therefore false positives might arise. We have to check if the value of 𝑑[𝑠[𝑖]] links *back* to the correct value of 𝑖.
 
-![https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png](https://codeforces.com/predownloaded/97/2c/972ceee5bb78b9d887ec1736faecc9d4fff93130.png)
+![Incorrect lookup](/post/sparse_set_ds/lookup_wrong.png)
 
 Here, 6 isn't actually stored in the data structure, but 𝑠[6] happened to be a 'correct' index, misleading our erroneous algorithm to think that it is.
 
@@ -87,7 +88,7 @@ bool sparse_set<N>::test(int idx) const {
 
 Just like normal bitsets, our implementation does not allow duplicate elements. Therefore, we have to check whether the element is present before inserting. Inserting an element is a rather simple operation: if the element is not already present, we push its value onto the 𝑑 array, update 𝑠[𝑖𝑑𝑥] to the correct value, and then increment the value of 𝑛 by 1.
 
-![https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png](https://codeforces.com/predownloaded/33/88/33889a8cf601971d71fad18345bc0a2258dd3ac0.png)
+![Insertion](/post/sparse_set_ds/insert.png)
 
 The code to do this would look a bit like this:
 
@@ -118,7 +119,7 @@ Basic procedure:
 
 The diagram for doing the above operations would look a bit like this:
 
-![https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png](https://codeforces.com/predownloaded/c9/31/c9317c074b05de52454309969ce93cfceaddf3ad.png)
+![Deletion](/post/sparse_set_ds/delete.png)
 
 Note that the above procedure still works when the element being deleted is the last element in the 𝑑 array, albeit with extra steps. However, since deletions to the last element are rare, it is not worth adding a branch to check for this condition.
 
@@ -142,7 +143,7 @@ void sparse_set<N>::reset(int idx) {
 
 Out of all the operations that the sparse set supports, this is arguably the most powerful, taking only 𝑂(1) time to compute, with an extremely simple implementation.
 
-![https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png](https://codeforces.com/predownloaded/c8/9a/c89add4d9d1c012684396ac106d03d10dd3b0803.png)
+![Clearance](/post/sparse_set_ds/clear.png)
 
 This is literally everything that has to be done :)
 
