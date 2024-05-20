@@ -5,7 +5,7 @@ theme: stack
 
 params:
   sidebar:
-    emoji: ö
+    emoji: ✨
     subtitle: Random thoughts and recollections
     avatar:
       enabled: true

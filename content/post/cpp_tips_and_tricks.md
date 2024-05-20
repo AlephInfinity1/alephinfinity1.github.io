@@ -2,6 +2,7 @@
 title = '[C++] Some programming language tips and tricks'
 date = 2024-02-17T17:09:01+08:00
 draft = false
+tags = ['Programming Languages', 'Codeforces']
 +++
 
 原文链接：

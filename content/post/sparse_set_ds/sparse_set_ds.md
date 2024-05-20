@@ -2,6 +2,7 @@
 title = '[Tutorial] The sparse set data structure'
 date = 2024-03-24T17:09:01+08:00
 draft = false
+tags = ['Codeforces', 'DSA']
 
 +++
 
