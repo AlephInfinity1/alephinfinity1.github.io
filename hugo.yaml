@@ -5,9 +5,28 @@ theme: stack
 
 params:
   sidebar:
-    emoji: ✨
+    emoji: ☀️
     subtitle: Random thoughts and recollections
     avatar:
       enabled: true
       local: true
       src: images/avatar.png
+  
+  footer:
+    since: 2024
+
+  article:
+    math: true
+
+  favicon: /favicon.ico
+
+  comments:
+    enabled: true
+    provider: gitalk
+
+  widgets:
+    homepage:
+      - type: archives
+      - type: tag-cloud
+    page:
+      - type: tag-cloud

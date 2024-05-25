@@ -13,6 +13,8 @@
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Codeforces' /><meta property='article:tag' content='DSA' /><meta property='article:published_time' content='2024-03-24T17:09:01&#43;08:00'/><meta property='article:modified_time' content='2024-03-24T17:09:01&#43;08:00'/>
 <meta name="twitter:title" content="[Tutorial] The sparse set data structure">
 <meta name="twitter:description" content="[Tutorial] The sparse set data structure - Codeforces Original post: https://codeforces.com/blog/entry/127472 Hello, Codeforces! I recently came across a data structure that I find quite interesting: the\u00a0sparse set. It functions similarly to a bitset and supports all its operations but has some quirks and useful features of its own. Particularly, unlike almost every other data structure, it does not need to be\u00a0initialised\u00a0at all before it can be used! Naturally, that also means that its data can be reset in\u00a0$\\mathcal O(1)$\u00a0time, as opposed to the\u00a0$\\mathcal O(n)$\u00a0time expected of regular bitsets.">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
     </head>
     <body class="
     article-page
@@ -39,7 +41,7 @@
         }
     })();
 </script>
-<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
     <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
@@ -62,7 +64,7 @@
                 
                 </a>
                 
-                    <span class="emoji">✨</span>
+                    <span class="emoji">☀️</span>
                 
             </figure>
             
@@ -104,7 +106,42 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                <section class="widget tagCloud">
+    <div class="widget-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+    </div>
+    <h2 class="widget-title section-title">Tags</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="/tags/codeforces/" class="font_size_2">
+                Codeforces
+            </a>
+        
+            <a href="/tags/dsa/" class="font_size_1">
+                DSA
+            </a>
+        
+            <a href="/tags/programming-languages/" class="font_size_1">
+                Programming Languages
+            </a>
+        
+    </div>
+</section>
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
@@ -621,6 +658,37 @@
      
     
         
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "",
+        clientSecret: "",
+        repo: "",
+        owner: "",
+        admin: [""],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
     
 
     <footer class="site-footer">
