@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Programming Languages on Redpo&#39;s Catalogue</title>
-        <link>https://example.org/tags/programming-languages/</link>
+        <link>http://localhost:1313/tags/programming-languages/</link>
         <description>Recent content in Programming Languages on Redpo&#39;s Catalogue</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 17 Feb 2024 17:09:01 +0800</lastBuildDate><atom:link href="https://example.org/tags/programming-languages/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 17 Feb 2024 17:09:01 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/programming-languages/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>[C&#43;&#43;] Some programming language tips and tricks</title>
-        <link>https://example.org/post/cpp_tips_and_tricks/</link>
+        <link>http://localhost:1313/post/cpp_tips_and_tricks/</link>
         <pubDate>Sat, 17 Feb 2024 17:09:01 +0800</pubDate>
         
-        <guid>https://example.org/post/cpp_tips_and_tricks/</guid>
+        <guid>http://localhost:1313/post/cpp_tips_and_tricks/</guid>
         <description>&lt;p&gt;原文链接：&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/126011&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[C++] Some programming language tips and tricks - Codeforces&lt;/a&gt;&lt;/p&gt;
