@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Codeforces on Redpo&#39;s Catalogue</title>
-        <link>http://localhost:1313/tags/codeforces/</link>
+        <link>https://example.org/tags/codeforces/</link>
         <description>Recent content in Codeforces on Redpo&#39;s Catalogue</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sun, 24 Mar 2024 17:09:01 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/codeforces/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 24 Mar 2024 17:09:01 +0800</lastBuildDate><atom:link href="https://example.org/tags/codeforces/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>[Tutorial] The sparse set data structure</title>
-        <link>http://localhost:1313/post/sparse_set_ds/sparse_set_ds/</link>
+        <link>https://example.org/post/sparse_set_ds/sparse_set_ds/</link>
         <pubDate>Sun, 24 Mar 2024 17:09:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/sparse_set_ds/sparse_set_ds/</guid>
+        <guid>https://example.org/post/sparse_set_ds/sparse_set_ds/</guid>
         <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/127472&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[Tutorial] The sparse set data structure - Codeforces&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Original post: &lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/127472&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -29,7 +29,7 @@
 &lt;p&gt;In most literature covering this data structure, the arrays $d$ and $s$ are called the &amp;lsquo;dense&amp;rsquo; and the &amp;lsquo;sparse&amp;rsquo; arrays, respectively.&lt;/p&gt;
 &lt;p&gt;For any array element not mentioned above, its value can be &lt;em&gt;anything&lt;/em&gt; without affecting the function of the data structure.&lt;/p&gt;
 &lt;p&gt;A typical sparse set might look like this (asterisk denotes terms that can be anything):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/example.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.org/post/sparse_set_ds/example.png&#34;
 	
 	
 	
@@ -69,7 +69,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; s[idx] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; s[idx] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; n;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Not really… it is entirely possible that 𝑖 is not in the set, yet 𝑠[𝑖] has a &amp;lsquo;valid&amp;rsquo; value between 0 and 𝑛−1 since the data structure specifies no guarantees for values of 𝑠[𝑖] where 𝑖 is not an element; therefore false positives might arise. We have to check if the value of 𝑑[𝑠[𝑖]] links &lt;em&gt;back&lt;/em&gt; to the correct value of 𝑖.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/lookup_wrong.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.org/post/sparse_set_ds/lookup_wrong.png&#34;
 	
 	
 	
@@ -94,7 +94,7 @@
 &lt;li&gt;&lt;strong&gt;Time cost&lt;/strong&gt;: 𝑂(1)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Just like normal bitsets, our implementation does not allow duplicate elements. Therefore, we have to check whether the element is present before inserting. Inserting an element is a rather simple operation: if the element is not already present, we push its value onto the 𝑑 array, update 𝑠[𝑖𝑑𝑥] to the correct value, and then increment the value of 𝑛 by 1.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/insert.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.org/post/sparse_set_ds/insert.png&#34;
 	
 	
 	
@@ -129,7 +129,7 @@
 &lt;li&gt;No need to modify 𝑠[𝑖𝑑𝑥] since the class invariant doesn&amp;rsquo;t care about 𝑠[𝑒] for deleted elements 𝑒.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The diagram for doing the above operations would look a bit like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/delete.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.org/post/sparse_set_ds/delete.png&#34;
 	
 	
 	
@@ -157,7 +157,7 @@
 &lt;li&gt;&lt;strong&gt;Time cost&lt;/strong&gt;: 𝑂(1)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Out of all the operations that the sparse set supports, this is arguably the most powerful, taking only 𝑂(1) time to compute, with an extremely simple implementation.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/clear.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://example.org/post/sparse_set_ds/clear.png&#34;
 	
 	
 	
@@ -396,10 +396,10 @@
         </item>
         <item>
         <title>[C&#43;&#43;] Some programming language tips and tricks</title>
-        <link>http://localhost:1313/post/cpp_tips_and_tricks/</link>
+        <link>https://example.org/post/cpp_tips_and_tricks/</link>
         <pubDate>Sat, 17 Feb 2024 17:09:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/cpp_tips_and_tricks/</guid>
+        <guid>https://example.org/post/cpp_tips_and_tricks/</guid>
         <description>&lt;p&gt;原文链接：&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/126011&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[C++] Some programming language tips and tricks - Codeforces&lt;/a&gt;&lt;/p&gt;
