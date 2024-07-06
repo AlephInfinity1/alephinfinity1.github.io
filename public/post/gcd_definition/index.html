@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Hello! As you all may know, the greatest common divisor ($\\gcd$) and the least common multiple ($\\operatorname{lcm}$) are crucial functions in the realm of number theory and general mathematics, with a wide range of applications. They also have sets of beautiful identities to go with: $$\\gcd(a, a) = \\operatorname{lcm}(a, a) = |a|$$ $$\\gcd(0, a) = \\operatorname{lcm}(1, a) = |a|$$ $$|ab| = \\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)$$ However, despite their mathematical elegance, there have always been quirks in their definitions that have always confused me.">
+<title>[Maths] Some musings on the definition of gcd and lcm</title>
+
+<link rel='canonical' href='http://localhost:1313/post/gcd_definition/'>
+
+<link rel="stylesheet" href="/scss/style.min.760e3dabc1e140d2e6abd27a8ca0aabb60e568829b29f67d2df12024136eff37.css"><meta property='og:title' content="[Maths] Some musings on the definition of gcd and lcm">
+<meta property='og:description' content="Hello! As you all may know, the greatest common divisor ($\\gcd$) and the least common multiple ($\\operatorname{lcm}$) are crucial functions in the realm of number theory and general mathematics, with a wide range of applications. They also have sets of beautiful identities to go with: $$\\gcd(a, a) = \\operatorname{lcm}(a, a) = |a|$$ $$\\gcd(0, a) = \\operatorname{lcm}(1, a) = |a|$$ $$|ab| = \\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)$$ However, despite their mathematical elegance, there have always been quirks in their definitions that have always confused me.">
+<meta property='og:url' content='http://localhost:1313/post/gcd_definition/'>
+<meta property='og:site_name' content='Redpo&#39;s Catalogue'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Mathematics' /><meta property='article:published_time' content='2024-07-07T00:30:16&#43;08:00'/><meta property='article:modified_time' content='2024-07-07T00:30:16&#43;08:00'/>
+<meta name="twitter:title" content="[Maths] Some musings on the definition of gcd and lcm">
+<meta name="twitter:description" content="Hello! As you all may know, the greatest common divisor ($\\gcd$) and the least common multiple ($\\operatorname{lcm}$) are crucial functions in the realm of number theory and general mathematics, with a wide range of applications. They also have sets of beautiful identities to go with: $$\\gcd(a, a) = \\operatorname{lcm}(a, a) = |a|$$ $$\\gcd(0, a) = \\operatorname{lcm}(1, a) = |a|$$ $$|ab| = \\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)$$ However, despite their mathematical elegance, there have always been quirks in their definitions that have always confused me.">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/images/avatar_hu21a8103a5176fa35565fda96bdef66f1_95717_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">☀️</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Redpo&#39;s Catalogue</a></h1>
+            <h2 class="site-description">Random thoughts and recollections</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                <section class="widget tagCloud">
+    <div class="widget-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+    </div>
+    <h2 class="widget-title section-title">Tags</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="/tags/mathematics/" class="font_size_7">
+                Mathematics
+            </a>
+        
+            <a href="/tags/notes/" class="font_size_6">
+                Notes
+            </a>
+        
+            <a href="/tags/index-pages/" class="font_size_3">
+                Index Pages
+            </a>
+        
+            <a href="/tags/codeforces/" class="font_size_2">
+                Codeforces
+            </a>
+        
+            <a href="/tags/dsa/" class="font_size_1">
+                DSA
+            </a>
+        
+            <a href="/tags/programming-languages/" class="font_size_1">
+                Programming Languages
+            </a>
+        
+    </div>
+</section>
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/gcd_definition/">[Maths] Some musings on the definition of gcd and lcm</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 07, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Hello!</p>
+<p>As you all may know, the greatest common divisor ($\gcd$) and the least common multiple ($\operatorname{lcm}$) are crucial functions in the realm of number theory and general mathematics, with a wide range of applications. They also have sets of beautiful identities to go with:</p>
+<p>$$\gcd(a, a) = \operatorname{lcm}(a, a) = |a|$$
+$$\gcd(0, a) = \operatorname{lcm}(1, a) = |a|$$
+$$|ab| = \gcd(a,b)\cdot\operatorname{lcm}(a,b)$$</p>
+<p>However, despite their mathematical elegance, there have always been quirks in their definitions that have always confused me. For example, why is it often defined that $\gcd(0,0)=0$, when $0$ can&rsquo;t appear as a divisor? Also, if $\operatorname{lcm}(0,a)$ is defined to be $0$ for all $a$, then why isn&rsquo;t the lcm of all pairs of integers zero, considering that it is the least natural number? I have thought of a tentative explanation that, although not very useful for applicative purposes, does solve the above inconsistencies in a rather simple and uncluttered way.</p>
+<h2 id="the-zero-oddity-defining-divisor-and-multiple">
+    <a href="#the-zero-oddity-defining-divisor-and-multiple" class="header-anchor">#</a>
+    The zero oddity: defining &lsquo;divisor&rsquo; and &lsquo;multiple&rsquo;
+</h2><p>Before we begin, we need to have a unified definition of the words &lsquo;divisor&rsquo; and &lsquo;multiple&rsquo;, concepts that are literally ingrained in the names of the functions gcd and lcm. The definitions of these terms are pretty unambiguous for positive numbers, but when 0 is involved, things become a little bit less clear: is 0 a multiple of all numbers, including zero? If so, is zero a divisor of zero?</p>
+<p>It is a well-known fact, that division by zero is undefined. However, that does not stop zero from being a divisor of zero. We can formalise the definition of multiple as follows:</p>
+<blockquote>
+<p>$a$ is a multiple of $b$ if there exists an integer $k$ such that $a=kb$.</p>
+</blockquote>
+<p>Correspondingly, we can also define &lsquo;divisor&rsquo; in a similar manner:</p>
+<blockquote>
+<p>$a$ is a divisor of $b$ if there exists an integer $k$ such that $b=ka$.</p>
+</blockquote>
+<p>Note that in neither definition is the concept of division invoked. Therefore, in terms of multiple and divisor relations, zero is no longer an oddity here. Obviously, there exist integers $k$ such that $0=0k$, thereby making 0 a divisor of 0. The only reason we can&rsquo;t divide zero by zero is that in this case the integer $k$ is not unique, so no quotient can be determined. This clarification in concepts allows us to define $\gcd(0,0)=0$ without introducing any inconsistencies, except for the &lsquo;greater&rsquo; part…</p>
+<h2 id="less-is-more-rethinking-greater">
+    <a href="#less-is-more-rethinking-greater" class="header-anchor">#</a>
+    Less is more: rethinking &lsquo;greater&rsquo;
+</h2><p>According to the above definition, every integer is a divisor of 0. So why is $\gcd(0,0)=0$ and not any other integer? Since there is no &lsquo;greatest&rsquo; integer to speak of, doesn&rsquo;t that mean $\gcd(0,0)$ is technically undefined? On a related note, why can&rsquo;t $\operatorname{lcm}(4,6)$ be $0$ or even $-12$ instead of $12$? To solve the above inconsistencies, a solution is to create an alternative definition for &lsquo;greater&rsquo; in these contexts.</p>
+<blockquote>
+<p>Define the divisor set function $\operatorname{ds}(n)$ over all integers to be the set of all divisors of $n$.
+For instance, $\operatorname{ds}(6)=\set{-6,-3,-2,-1,1,2,3,6}$, $\operatorname{ds}(-1)=\set{-1,1}$, and $\operatorname{ds}(0)=\mathbb Z$.</p>
+</blockquote>
+<p>The following observations can be made:</p>
+<ul>
+<li>$\operatorname{ds}(n)=\operatorname{ds}(-n)$ for all $n$,</li>
+<li>$\operatorname{ds}(1)$ is a subset of all $\operatorname{ds}(n)$, while $\operatorname{ds}(0)$ is a superset of all,</li>
+<li>If $d$ is a divisor of $n$, then $\operatorname{ds}(d)\sube\operatorname{ds}(n)$.</li>
+</ul>
+<p>Correspondingly, define the multiple set function $\operatorname{ms}(n)=\set{m\in\mathbb Z|n\in\operatorname{ds}(m)}$.</p>
+<p>So, instead of defining greater in the traditional sense, we can instead establish a partial ordering over the set of integers based on the numbers&rsquo; divisor sets. We declare an integer $a$ to be divisor-less than or equal to another integer $b$, if and only if $\operatorname{ds}(a)\sube\operatorname{ds}(b)$. Denote this relation $a\sqsubseteq b$. Under this ordering relation, $0$ is the maximum element in $\mathbb Z$, while $1$ and $-1$ are minimal elements. As sign no longer matters in ordering, we define $\gcd$ and $\operatorname{lcm}$ to only return nonnegative results only.</p>
+<p>Then, we can define $\gcd(a,b)$ to be the greatest nonnegative element in $\operatorname{ds}(a)\cap\operatorname{ds}(b)$ and $\operatorname{lcm}(a,b)$ the least in $\operatorname{ms}(a)\cap\operatorname{ms}(b)$, as ordered by $\sqsubseteq$. Although this ordering does not cover all numbers (e.g. $2$ and $3$ are unordered), it can be shown, that intersections of divisor sets always have a maximum element, and intersections of multiple sets a minimum element.</p>
+<p>We can also prove that, for positive integers $a$ and $b$, the result of $\gcd$ and $\operatorname{lcm}$ using the above ordering and the regular ordering will always be the same. Since $d\sqsubseteq n$ whenever $d$ is a divisor of $n$, as long as $a$ and $b$ are a multiple-divisor pair, then $a\sqsubseteq b\iff a\le b$ and vice versa.</p>
+<p>Now, let&rsquo;s see how we can use the above definition, to explain seeming discrepancies at corner cases:</p>
+<ul>
+<li>$\gcd(0,0)=0$ because $\operatorname{ds}(0)\cap\operatorname{ds}(0)=\mathbb Z$, and as detailed above, under the ordering $\sqsubseteq$, $0$ is the greatest element in $\mathbb Z$.</li>
+<li>Similarly, $\gcd(0,a)=|a|$ because $\operatorname{ds}(0)\cap\operatorname{ds}(a)=\operatorname{ds}(a)$, and $a$ is the greatest element of that set. The absolute value is required since we want $\gcd$ to return nonnegative values only.</li>
+<li>$0$ is the only multiple of $0$. Therefore, for all integers $a$, $\operatorname{ms}(0)\cap\operatorname{ms}(a)=\set{0}$. In this case, the only reasonable value for $\operatorname{lcm}(0,a)$ would be $0$.</li>
+<li>$\operatorname{lcm}(4,6)=12$ and not $0$, not because of any special definitions, but because in the context of $\operatorname{lcm}$, $0$ would be &lsquo;greater&rsquo; than $12$!</li>
+</ul>
+<h2 id="conclusion">
+    <a href="#conclusion" class="header-anchor">#</a>
+    Conclusion
+</h2><p>While the above results probably won&rsquo;t matter much during actual computing, I still find them pretty satisfying, as they provide a nice way to interpret the special-case values of the functions $\gcd$ and $\operatorname{lcm}$. Additionally, perhaps this might poke some insight as to extend the above functions to other domains, such as the rational numbers or the Gaussian integers?</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mathematics/">Mathematics</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/post/linalg_recap/_catalog/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Notes] 线性代数</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div id="gitalk-container"></div>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+    const gitalk = new Gitalk({
+        clientID: "",
+        clientSecret: "",
+        repo: "",
+        owner: "",
+        admin: [""],
+        distractionFreeMode: false, 
+        id: md5(location.pathname), 
+    });
+    (function () {
+        if (
+            ["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1
+        ) {
+            document.getElementById("gitalk-container").innerHTML =
+                "Gitalk comments not available by default when the website is previewed locally.";
+            return;
+        }
+        gitalk.render("gitalk-container");
+    })();
+</script>
+
+
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Redpo&#39;s Catalogue
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.25.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

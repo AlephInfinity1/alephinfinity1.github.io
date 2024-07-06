@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>线性代数回顾 on Redpo&#39;s Catalogue</title>
+        <link>http://localhost:1313/post/linalg_recap/</link>
+        <description>Recent content in 线性代数回顾 on Redpo&#39;s Catalogue</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Mon, 01 Jul 2024 10:23:23 +0800</lastBuildDate><atom:link href="http://localhost:1313/post/linalg_recap/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>[Notes] 线性代数</title>
+        <link>http://localhost:1313/post/linalg_recap/_catalog/</link>
+        <pubDate>Mon, 01 Jul 2024 10:23:23 +0800</pubDate>
+        
+        <guid>http://localhost:1313/post/linalg_recap/_catalog/</guid>
+        <description>&lt;h2 id=&#34;线性代数回顾目录&#34;&gt;
+    &lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e4%bb%a3%e6%95%b0%e5%9b%9e%e9%a1%be%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
+    线性代数回顾目录
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;../defs&#34; &gt;术语索引&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../basics&#34; &gt;线性代数入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../rref&#34; &gt;行简化阶梯形矩阵、求联立方程组解&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../subspace&#34; &gt;线性子空间、行空间、零空间&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../eigen&#34; &gt;特征值、特征向量、特征多项式&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;正交、正交矩阵、Gram–Schmidt 正交化 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;对角化、可对角化矩阵 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;数域、基变换公式 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;复数矩阵、酉矩阵 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;Jordan 标准形、矩阵函数 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;内积空间、对偶子空间 (Coming Soon)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

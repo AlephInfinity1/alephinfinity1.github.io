@@ -8,10 +8,10 @@
         <language>en-us</language>
         <lastBuildDate>Sun, 24 Mar 2024 17:09:01 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/codeforces/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>[Tutorial] The sparse set data structure</title>
-        <link>http://localhost:1313/post/sparse_set_ds/sparse_set_ds/</link>
+        <link>http://localhost:1313/post/algo/sparse_set_ds/sparse_set_ds/</link>
         <pubDate>Sun, 24 Mar 2024 17:09:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/sparse_set_ds/sparse_set_ds/</guid>
+        <guid>http://localhost:1313/post/algo/sparse_set_ds/sparse_set_ds/</guid>
         <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/127472&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[Tutorial] The sparse set data structure - Codeforces&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Original post: &lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/127472&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -23,13 +23,13 @@
     Introduction
 &lt;/h1&gt;&lt;p&gt;The sparse set consists simply of two integer arrays (which I&amp;rsquo;ll call $d$ and $s$) and a size variable $n$, satisfying the following class invariants:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Invariant 1&lt;/strong&gt;: 𝑑[0..(𝑛−1)] (inclusive) stores the elements of the bitset;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Invariant 2&lt;/strong&gt;: If 𝑒 is an element of the bitset, then 𝑠[𝑒] stores its index in the 𝑑 array.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Invariant 1&lt;/strong&gt;: $d[0..(n−1)]$ (inclusive) stores the elements of the bitset;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Invariant 2&lt;/strong&gt;: If $e$ is an element of the bitset, then $s[e]$ stores its index in the 𝑑 array.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;In most literature covering this data structure, the arrays $d$ and $s$ are called the &amp;lsquo;dense&amp;rsquo; and the &amp;lsquo;sparse&amp;rsquo; arrays, respectively.&lt;/p&gt;
 &lt;p&gt;For any array element not mentioned above, its value can be &lt;em&gt;anything&lt;/em&gt; without affecting the function of the data structure.&lt;/p&gt;
 &lt;p&gt;A typical sparse set might look like this (asterisk denotes terms that can be anything):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/sparse_set_ds/example.png&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/example.png&#34;
 	
 	
 	
@@ -39,14 +39,14 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;The red lines indicate the connections between the elements in 𝑑 and 𝑠. It can be shown that, for all indices 𝑖 in the range [0,𝑛−1], the constraint 𝑑[𝑠[𝑑[𝑖]]]=𝑑[𝑖] is satisfied.&lt;/p&gt;
+&lt;p&gt;The red lines indicate the connections between the elements in $d$ and $s$. It can be shown that, for all indices $i$ in the range $[0,n−1]$, the constraint $d[s[d[i]]]=d[i]$ is satisfied.&lt;/p&gt;
 &lt;p&gt;In C++ code, the data structure can be represented as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; N&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sparse_set&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; d[N], s[N];
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note that, in this article, we would use 𝑁 to denote the size of the data structure itself (and thus, the set of elements allowed is 0,1,…,𝑁−1), and 𝑛 to denote the number of elements currently stored.&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note that, in this article, we would use $N$ to denote the size of the data structure itself (and thus, the set of elements allowed is $0,1,\ldots,N−1$), and $n$ to denote the number of elements currently stored.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Important implementation detail&lt;/strong&gt;: if you are using C, C++, or Rust, you still &lt;em&gt;have&lt;/em&gt; to initialise this data structure in its constructor since accessing an uninitialised element does not return an unspecified value; it is undefined behaviour and can introduce bugs elsewhere in your program. You don&amp;rsquo;t have to do this when resetting the data structure, however.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -188,23 +188,16 @@
 &lt;/h1&gt;&lt;p&gt;The following is a C++ template implementation of the sparse set that I have written. It tries to implement all functionalities of a vanilla C++ bitset.&lt;/p&gt;
 &lt;p&gt;Some implementation details:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The type of data this implementation of the sparse set stores is &lt;code&gt;std::size_t&lt;/code&gt;, just like the STL bitset.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Like the STL bitset, using &lt;code&gt;[]&lt;/code&gt; to access and modify elements is supported. The semantics are the same as a STL bitset.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;test&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;, &lt;code&gt;reset&lt;/code&gt;, and &lt;code&gt;flip&lt;/code&gt; all throw &lt;code&gt;std::out_of_range&lt;/code&gt; if the parameter is greater than or equal to 𝑁. However, using &lt;code&gt;[]&lt;/code&gt; to access elements with out-of-range indices results in undefined behaviour.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Iterators are supported and iterate through all elements in the set. The values they point to are immutable.&lt;/p&gt;
+&lt;li&gt;The type of data this implementation of the sparse set stores is &lt;code&gt;std::size_t&lt;/code&gt;, just like the STL bitset.&lt;/li&gt;
+&lt;li&gt;Like the STL bitset, using &lt;code&gt;[]&lt;/code&gt; to access and modify elements is supported. The semantics are the same as a STL bitset.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;test&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;, &lt;code&gt;reset&lt;/code&gt;, and &lt;code&gt;flip&lt;/code&gt; all throw &lt;code&gt;std::out_of_range&lt;/code&gt; if the parameter is greater than or equal to 𝑁. However, using &lt;code&gt;[]&lt;/code&gt; to access elements with out-of-range indices results in undefined behaviour.&lt;/li&gt;
+&lt;li&gt;Iterators are supported and iterate through all elements in the set. The values they point to are immutable.
 &lt;ul&gt;
 &lt;li&gt;This also means you can use a range-for loop to access all elements of a sparse set.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Full code&lt;/strong&gt;&lt;/p&gt;
+&lt;li&gt;&lt;strong&gt;Full code&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;array&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;cstddef&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
@@ -368,9 +361,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;size_type, N&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; d_;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;size_type, N&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; s_;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;conclusion&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;conclusion&#34;&gt;
     &lt;a href=&#34;#conclusion&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
     Conclusion
 &lt;/h1&gt;&lt;p&gt;While the sparse set data structure is rather obscure and almost never used in competitive programming, I think it can be useful in quite a few scenarios. In particular, it can be used as a more performant and hack-resistant version of &lt;code&gt;std::set&lt;/code&gt; and &lt;code&gt;std::unordered_set&lt;/code&gt; when the only type of data that needs to be stored is small integers. I believe that many of its applications already have alternatives in the STL, however.&lt;/p&gt;
@@ -396,10 +387,10 @@
         </item>
         <item>
         <title>[C&#43;&#43;] Some programming language tips and tricks</title>
-        <link>http://localhost:1313/post/cpp_tips_and_tricks/</link>
+        <link>http://localhost:1313/post/proglang/cpp_tips_and_tricks/</link>
         <pubDate>Sat, 17 Feb 2024 17:09:01 +0800</pubDate>
         
-        <guid>http://localhost:1313/post/cpp_tips_and_tricks/</guid>
+        <guid>http://localhost:1313/post/proglang/cpp_tips_and_tricks/</guid>
         <description>&lt;p&gt;原文链接：&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://codeforces.com/blog/entry/126011&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;[C++] Some programming language tips and tricks - Codeforces&lt;/a&gt;&lt;/p&gt;

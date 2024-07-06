@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Mathematics on Redpo&#39;s Catalogue</title>
+        <link>http://localhost:1313/tags/mathematics/</link>
+        <description>Recent content in Mathematics on Redpo&#39;s Catalogue</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 07 Jul 2024 00:30:16 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/mathematics/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>[Maths] Some musings on the definition of gcd and lcm</title>
+        <link>http://localhost:1313/post/gcd_definition/</link>
+        <pubDate>Sun, 07 Jul 2024 00:30:16 +0800</pubDate>
+        
+        <guid>http://localhost:1313/post/gcd_definition/</guid>
+        <description>&lt;p&gt;Hello!&lt;/p&gt;
+&lt;p&gt;As you all may know, the greatest common divisor ($\gcd$) and the least common multiple ($\operatorname{lcm}$) are crucial functions in the realm of number theory and general mathematics, with a wide range of applications. They also have sets of beautiful identities to go with:&lt;/p&gt;
+&lt;p&gt;$$\gcd(a, a) = \operatorname{lcm}(a, a) = |a|$$
+$$\gcd(0, a) = \operatorname{lcm}(1, a) = |a|$$
+$$|ab| = \gcd(a,b)\cdot\operatorname{lcm}(a,b)$$&lt;/p&gt;
+&lt;p&gt;However, despite their mathematical elegance, there have always been quirks in their definitions that have always confused me. For example, why is it often defined that $\gcd(0,0)=0$, when $0$ can&amp;rsquo;t appear as a divisor? Also, if $\operatorname{lcm}(0,a)$ is defined to be $0$ for all $a$, then why isn&amp;rsquo;t the lcm of all pairs of integers zero, considering that it is the least natural number? I have thought of a tentative explanation that, although not very useful for applicative purposes, does solve the above inconsistencies in a rather simple and uncluttered way.&lt;/p&gt;
+&lt;h2 id=&#34;the-zero-oddity-defining-divisor-and-multiple&#34;&gt;
+    &lt;a href=&#34;#the-zero-oddity-defining-divisor-and-multiple&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
+    The zero oddity: defining &amp;lsquo;divisor&amp;rsquo; and &amp;lsquo;multiple&amp;rsquo;
+&lt;/h2&gt;&lt;p&gt;Before we begin, we need to have a unified definition of the words &amp;lsquo;divisor&amp;rsquo; and &amp;lsquo;multiple&amp;rsquo;, concepts that are literally ingrained in the names of the functions gcd and lcm. The definitions of these terms are pretty unambiguous for positive numbers, but when 0 is involved, things become a little bit less clear: is 0 a multiple of all numbers, including zero? If so, is zero a divisor of zero?&lt;/p&gt;
+&lt;p&gt;It is a well-known fact, that division by zero is undefined. However, that does not stop zero from being a divisor of zero. We can formalise the definition of multiple as follows:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$a$ is a multiple of $b$ if there exists an integer $k$ such that $a=kb$.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Correspondingly, we can also define &amp;lsquo;divisor&amp;rsquo; in a similar manner:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$a$ is a divisor of $b$ if there exists an integer $k$ such that $b=ka$.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Note that in neither definition is the concept of division invoked. Therefore, in terms of multiple and divisor relations, zero is no longer an oddity here. Obviously, there exist integers $k$ such that $0=0k$, thereby making 0 a divisor of 0. The only reason we can&amp;rsquo;t divide zero by zero is that in this case the integer $k$ is not unique, so no quotient can be determined. This clarification in concepts allows us to define $\gcd(0,0)=0$ without introducing any inconsistencies, except for the &amp;lsquo;greater&amp;rsquo; part…&lt;/p&gt;
+&lt;h2 id=&#34;less-is-more-rethinking-greater&#34;&gt;
+    &lt;a href=&#34;#less-is-more-rethinking-greater&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
+    Less is more: rethinking &amp;lsquo;greater&amp;rsquo;
+&lt;/h2&gt;&lt;p&gt;According to the above definition, every integer is a divisor of 0. So why is $\gcd(0,0)=0$ and not any other integer? Since there is no &amp;lsquo;greatest&amp;rsquo; integer to speak of, doesn&amp;rsquo;t that mean $\gcd(0,0)$ is technically undefined? On a related note, why can&amp;rsquo;t $\operatorname{lcm}(4,6)$ be $0$ or even $-12$ instead of $12$? To solve the above inconsistencies, a solution is to create an alternative definition for &amp;lsquo;greater&amp;rsquo; in these contexts.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Define the divisor set function $\operatorname{ds}(n)$ over all integers to be the set of all divisors of $n$.
+For instance, $\operatorname{ds}(6)=\set{-6,-3,-2,-1,1,2,3,6}$, $\operatorname{ds}(-1)=\set{-1,1}$, and $\operatorname{ds}(0)=\mathbb Z$.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The following observations can be made:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\operatorname{ds}(n)=\operatorname{ds}(-n)$ for all $n$,&lt;/li&gt;
+&lt;li&gt;$\operatorname{ds}(1)$ is a subset of all $\operatorname{ds}(n)$, while $\operatorname{ds}(0)$ is a superset of all,&lt;/li&gt;
+&lt;li&gt;If $d$ is a divisor of $n$, then $\operatorname{ds}(d)\sube\operatorname{ds}(n)$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Correspondingly, define the multiple set function $\operatorname{ms}(n)=\set{m\in\mathbb Z|n\in\operatorname{ds}(m)}$.&lt;/p&gt;
+&lt;p&gt;So, instead of defining greater in the traditional sense, we can instead establish a partial ordering over the set of integers based on the numbers&amp;rsquo; divisor sets. We declare an integer $a$ to be divisor-less than or equal to another integer $b$, if and only if $\operatorname{ds}(a)\sube\operatorname{ds}(b)$. Denote this relation $a\sqsubseteq b$. Under this ordering relation, $0$ is the maximum element in $\mathbb Z$, while $1$ and $-1$ are minimal elements. As sign no longer matters in ordering, we define $\gcd$ and $\operatorname{lcm}$ to only return nonnegative results only.&lt;/p&gt;
+&lt;p&gt;Then, we can define $\gcd(a,b)$ to be the greatest nonnegative element in $\operatorname{ds}(a)\cap\operatorname{ds}(b)$ and $\operatorname{lcm}(a,b)$ the least in $\operatorname{ms}(a)\cap\operatorname{ms}(b)$, as ordered by $\sqsubseteq$. Although this ordering does not cover all numbers (e.g. $2$ and $3$ are unordered), it can be shown, that intersections of divisor sets always have a maximum element, and intersections of multiple sets a minimum element.&lt;/p&gt;
+&lt;p&gt;We can also prove that, for positive integers $a$ and $b$, the result of $\gcd$ and $\operatorname{lcm}$ using the above ordering and the regular ordering will always be the same. Since $d\sqsubseteq n$ whenever $d$ is a divisor of $n$, as long as $a$ and $b$ are a multiple-divisor pair, then $a\sqsubseteq b\iff a\le b$ and vice versa.&lt;/p&gt;
+&lt;p&gt;Now, let&amp;rsquo;s see how we can use the above definition, to explain seeming discrepancies at corner cases:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\gcd(0,0)=0$ because $\operatorname{ds}(0)\cap\operatorname{ds}(0)=\mathbb Z$, and as detailed above, under the ordering $\sqsubseteq$, $0$ is the greatest element in $\mathbb Z$.&lt;/li&gt;
+&lt;li&gt;Similarly, $\gcd(0,a)=|a|$ because $\operatorname{ds}(0)\cap\operatorname{ds}(a)=\operatorname{ds}(a)$, and $a$ is the greatest element of that set. The absolute value is required since we want $\gcd$ to return nonnegative values only.&lt;/li&gt;
+&lt;li&gt;$0$ is the only multiple of $0$. Therefore, for all integers $a$, $\operatorname{ms}(0)\cap\operatorname{ms}(a)=\set{0}$. In this case, the only reasonable value for $\operatorname{lcm}(0,a)$ would be $0$.&lt;/li&gt;
+&lt;li&gt;$\operatorname{lcm}(4,6)=12$ and not $0$, not because of any special definitions, but because in the context of $\operatorname{lcm}$, $0$ would be &amp;lsquo;greater&amp;rsquo; than $12$!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;
+    &lt;a href=&#34;#conclusion&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
+    Conclusion
+&lt;/h2&gt;&lt;p&gt;While the above results probably won&amp;rsquo;t matter much during actual computing, I still find them pretty satisfying, as they provide a nice way to interpret the special-case values of the functions $\gcd$ and $\operatorname{lcm}$. Additionally, perhaps this might poke some insight as to extend the above functions to other domains, such as the rational numbers or the Gaussian integers?&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>[Notes] 线性代数</title>
+        <link>http://localhost:1313/post/linalg_recap/_catalog/</link>
+        <pubDate>Mon, 01 Jul 2024 10:23:23 +0800</pubDate>
+        
+        <guid>http://localhost:1313/post/linalg_recap/_catalog/</guid>
+        <description>&lt;h2 id=&#34;线性代数回顾目录&#34;&gt;
+    &lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e4%bb%a3%e6%95%b0%e5%9b%9e%e9%a1%be%e7%9b%ae%e5%bd%95&#34; class=&#34;header-anchor&#34;&gt;#&lt;/a&gt;
+    线性代数回顾目录
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;../defs&#34; &gt;术语索引&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../basics&#34; &gt;线性代数入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../rref&#34; &gt;行简化阶梯形矩阵、求联立方程组解&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../subspace&#34; &gt;线性子空间、行空间、零空间&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;../eigen&#34; &gt;特征值、特征向量、特征多项式&lt;/a&gt; WIP&lt;/li&gt;
+&lt;li&gt;正交、正交矩阵、Gram–Schmidt 正交化 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;对角化、可对角化矩阵 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;数域、基变换公式 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;复数矩阵、酉矩阵 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;Jordan 标准形、矩阵函数 (Coming Soon)&lt;/li&gt;
+&lt;li&gt;内积空间、对偶子空间 (Coming Soon)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -2,13 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/post/gcd_definition/</loc>
+    <lastmod>2024-07-07T00:30:16+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/mathematics/</loc>
+    <lastmod>2024-07-07T00:30:16+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/post/</loc>
-    <lastmod>2024-05-13T13:15:25+08:00</lastmod>
+    <lastmod>2024-07-07T00:30:16+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-05-13T13:15:25+08:00</lastmod>
+    <lastmod>2024-07-07T00:30:16+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/sparse_set_ds/sparse_set_ds/</loc>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2024-07-07T00:30:16+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/notes/</loc>
+    <lastmod>2024-07-05T22:18:31+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/defs/</loc>
+    <lastmod>2024-07-05T22:18:31+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/subspace/</loc>
+    <lastmod>2024-07-05T22:13:12+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/eigen/</loc>
+    <lastmod>2024-07-05T21:55:12+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/jordan/</loc>
+    <lastmod>2024-07-01T11:49:12+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/index-pages/</loc>
+    <lastmod>2024-07-01T10:32:04+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/proglang/</loc>
+    <lastmod>2024-07-01T10:32:04+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/_catalog/</loc>
+    <lastmod>2024-07-01T10:23:23+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/algo/</loc>
+    <lastmod>2024-07-01T10:23:23+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/</loc>
+    <lastmod>2024-07-01T10:23:23+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/linalg_recap/basics/</loc>
+    <lastmod>2024-07-01T10:23:23+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/algo/sparse_set_ds/sparse_set_ds/</loc>
     <lastmod>2024-03-24T17:09:01+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/codeforces/</loc>
@@ -17,10 +59,7 @@
     <loc>http://localhost:1313/tags/dsa/</loc>
     <lastmod>2024-03-24T17:09:01+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2024-03-24T17:09:01+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/post/cpp_tips_and_tricks/</loc>
+    <loc>http://localhost:1313/post/proglang/cpp_tips_and_tricks/</loc>
     <lastmod>2024-02-17T17:09:01+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/programming-languages/</loc>
